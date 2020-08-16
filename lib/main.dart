@@ -35,17 +35,63 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-String convert( int first){
 
-  const url=https://api.exchangeratesapi.io/latest HTTP/1.1
+TextEditingController _controller =TextEditingController();
 
-http.get(
-  Uri.encodeFull(url),headers:{"Accept":"application/json"}
-).then((r){
-  Map body =json.decode(r.decode(r.body);
-  var res = body["rates"][to])
+@override 
+Widget build(BuildContext context){
+
+
+  return Scaffold(
+  appBar:AppBar(
+    title:Text("Currency Converter"),
+  ),
+  body:Padding(
+    padding: const EdgeInsets.all(24.0)
+    child:Column(
+      children: <Widget>[
+        child:Row(
+          children:[
+            child:TextField(
+            controller: _controller,
+            decoration:InputDecoration( 
+              labelText:"Input Value",
+              ),
+            ),
+            child:DropdownButton<String>(
+    value: dropdownValue,
+    icon: Icon(Icons.arrow_downward),
+    iconSize: 24,
+    elevation: 16,
+    style: TextStyle(
+      color: Colors.deepPurple
+    ),
+    underline: Container(
+      height: 2,
+      color: Colors.deepPurpleAccent,
+    ),
+    onChanged: (String newValue) {
+      setState(() {
+        dropdownValue = newValue;
+      });
+    },
+    items: <String>['One', 'Two', 'Free', 'Four']
+      .map<DropdownMenuItem<String>>((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      })
+      .toList(),
+
+             ,
+
+
+        
+
+      
+      ],),))
 }
-)
-)
-}
+
+
 
