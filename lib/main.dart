@@ -39,7 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
     http.get(Uri.encodeFull(url), headers: {"Accept": "application/json"}).then(
         (r) {
       Map body = json.decode(r.body);
-      double temp2 = body['rates'].cur1;
+      double temp2 = body['rates'].cur2;
       val2 = val1 * temp2;
     });
     return val2;
@@ -57,13 +57,16 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             Row(children: <Widget>[
-              Container(height: 2, width: 4),
-              TextField(
-                controller: _controller,
-                decoration: InputDecoration(
-                  labelText: "Input Value",
+              SizedBox(
+                width: 100,
+                child: TextField(
+                  controller: _controller,
+                  decoration: InputDecoration(
+                    labelText: "Input Value",
+                  ),
                 ),
               ),
               DropdownButton<String>(
@@ -77,9 +80,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     color: Colors.tealAccent,
                   ),
                   onChanged: (String newValue) {
-                    {
-                      val1 = double.parse(newValue);
-                    }
+                    setState(() {
+                      cur1 = newValue;
+                    });
                   },
                   items: <String>[
                     'CAD',
@@ -130,10 +133,13 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             ),
             Row(children: [
-              TextField(
-                controller: _controller,
-                decoration: InputDecoration(
-                  labelText: "Output Value",
+              SizedBox(
+                width: 100,
+                child: TextField(
+                  controller: _controller,
+                  decoration: InputDecoration(
+                    labelText: "Output Value",
+                  ),
                 ),
               ),
               DropdownButton<String>(
@@ -147,9 +153,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     color: Colors.tealAccent,
                   ),
                   onChanged: (String newValue) {
-                    {
-                      val2 = double.parse(newValue);
-                    }
+                    setState(() {
+                      cur2 = newValue;
+                    });
                   },
                   items: <String>[
                     'CAD',
