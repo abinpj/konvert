@@ -13,7 +13,6 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.teal,
         accentColor: Colors.tealAccent,
-        fontFamily: '',
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: MyHomePage(title: 'Conversion Home'),
@@ -30,114 +29,172 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-double val1 = 0.0;
-double val2 = 0.0;
-var cur1 = 'INR';
-var cur2 = 'USD';
-
 class _MyHomePageState extends State<MyHomePage> {
+  double val1 = 0.0;
+  double val2 = 0.0;
+  var cur1 = 'INR';
+  var cur2 = 'USD';
   double convert() {
-    var url = "https://api.exchangeratesapi.io/latest?base=$cur1&symbols=$cur2";
+    var url = "https://api.exchangeratesapi.io/latest?base=$cur1";
     http.get(Uri.encodeFull(url), headers: {"Accept": "application/json"}).then(
         (r) {
       Map body = json.decode(r.body);
-      double temp2 = body['rates'][val1];
+      double temp2 = body['rates'].cur1;
       val2 = val1 * temp2;
     });
     return val2;
   }
 
+  TextEditingController _controller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
-  }
-}
-
-TextEditingController _controller = TextEditingController();
-
-@override
-Widget build(BuildContext context) {
-  return Scaffold(
-    appBar: AppBar(
-      title: Text("Currency Converter"),
-    ),
-    body: Padding(
-      padding: const EdgeInsets.all(24.0),
-      child: Column(
-        children: <Widget>[
-          Row(children: [
-            TextField(
-              controller: _controller,
-              decoration: InputDecoration(
-                labelText: "Input Value",
-              ),
-            ),
-            DropdownButton<String>(
-                value: cur1,
-                icon: Icon(Icons.arrow_downward),
-                iconSize: 24,
-                elevation: 16,
-                style: TextStyle(color: Colors.teal),
-                underline: Container(
-                  height: 2,
-                  color: Colors.tealAccent,
-                ),
-                onChanged: (String newValue) {
-                  {
-                    val1 = double.parse(newValue);
-                  }
-                },
-                items: <String>[
-                  'CAD',
-                  'HKD',
-                  'ISK',
-                  'PHP',
-                  'DKK',
-                  'HUF',
-                  'CZK',
-                  'GBP',
-                  'RON',
-                  'SEK',
-                  'IDR',
-                  'INR',
-                  'BRL',
-                  'RUB',
-                  'HRK',
-                  'JPY',
-                  'THB',
-                  'CHF',
-                  'EUR',
-                  'MYR',
-                  'BGN',
-                  'TRY',
-                  'CNY',
-                  'NOK',
-                  'NZD',
-                  'ZAR',
-                  'USD',
-                  'MXN',
-                  'SGD',
-                  'AUD',
-                  'ILS',
-                  'KRW',
-                  'PLN'
-                ].map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                })),
-          ]),
-          FloatingActionButton(
-            onPressed: () {
-              _controller.text = val2.toString();
-              val1 = val2;
-              val2 = val1;
-            },
-          ),
-        ],
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Currency Converter"),
+        centerTitle: true,
       ),
-    ),
-  );
+      body: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          children: <Widget>[
+            Row(children: <Widget>[
+              Container(height: 2, width: 4),
+              TextField(
+                controller: _controller,
+                decoration: InputDecoration(
+                  labelText: "Input Value",
+                ),
+              ),
+              DropdownButton<String>(
+                  value: cur1,
+                  icon: Icon(Icons.arrow_downward),
+                  iconSize: 24,
+                  elevation: 16,
+                  style: TextStyle(color: Colors.teal),
+                  underline: Container(
+                    height: 2,
+                    color: Colors.tealAccent,
+                  ),
+                  onChanged: (String newValue) {
+                    {
+                      val1 = double.parse(newValue);
+                    }
+                  },
+                  items: <String>[
+                    'CAD',
+                    'HKD',
+                    'ISK',
+                    'PHP',
+                    'DKK',
+                    'HUF',
+                    'CZK',
+                    'GBP',
+                    'RON',
+                    'SEK',
+                    'IDR',
+                    'INR',
+                    'BRL',
+                    'RUB',
+                    'HRK',
+                    'JPY',
+                    'THB',
+                    'CHF',
+                    'EUR',
+                    'MYR',
+                    'BGN',
+                    'TRY',
+                    'CNY',
+                    'NOK',
+                    'NZD',
+                    'ZAR',
+                    'USD',
+                    'MXN',
+                    'SGD',
+                    'AUD',
+                    'ILS',
+                    'KRW',
+                    'PLN'
+                  ].map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList()),
+            ]),
+            FloatingActionButton(
+              onPressed: () {
+                _controller.text = val2.toString();
+                val1 = val2;
+                val2 = val1;
+              },
+            ),
+            Row(children: [
+              TextField(
+                controller: _controller,
+                decoration: InputDecoration(
+                  labelText: "Output Value",
+                ),
+              ),
+              DropdownButton<String>(
+                  value: cur2,
+                  icon: Icon(Icons.arrow_downward),
+                  iconSize: 24,
+                  elevation: 16,
+                  style: TextStyle(color: Colors.teal),
+                  underline: Container(
+                    height: 2,
+                    color: Colors.tealAccent,
+                  ),
+                  onChanged: (String newValue) {
+                    {
+                      val2 = double.parse(newValue);
+                    }
+                  },
+                  items: <String>[
+                    'CAD',
+                    'HKD',
+                    'ISK',
+                    'PHP',
+                    'DKK',
+                    'HUF',
+                    'CZK',
+                    'GBP',
+                    'RON',
+                    'SEK',
+                    'IDR',
+                    'INR',
+                    'BRL',
+                    'RUB',
+                    'HRK',
+                    'JPY',
+                    'THB',
+                    'CHF',
+                    'EUR',
+                    'MYR',
+                    'BGN',
+                    'TRY',
+                    'CNY',
+                    'NOK',
+                    'NZD',
+                    'ZAR',
+                    'USD',
+                    'MXN',
+                    'SGD',
+                    'AUD',
+                    'ILS',
+                    'KRW',
+                    'PLN'
+                  ].map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList()),
+            ]),
+          ],
+        ),
+      ),
+    );
+  }
 }
